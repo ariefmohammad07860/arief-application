@@ -24,7 +24,8 @@ db.connect(err => {
   }
 });
 
-/* GET USERS */
+/* ================= API ROUTES ================= */
+
 app.get("/api/users", (req, res) => {
   db.query("SELECT * FROM users", (err, result) => {
     if (err) return res.status(500).json(err);
@@ -32,7 +33,6 @@ app.get("/api/users", (req, res) => {
   });
 });
 
-/* ADD USER */
 app.post("/api/users", (req, res) => {
   const { name, email } = req.body;
 
@@ -46,13 +46,16 @@ app.post("/api/users", (req, res) => {
   );
 });
 
-/* Serve Frontend */
+/* ============== SERVE FRONTEND BUILD ============== */
+
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
+/* ================= START SERVER ================= */
+
 app.listen(process.env.PORT || 5000, "0.0.0.0", () => {
-  console.log("Server running...");
+  console.log("🚀 Server running on 0.0.0.0:5000");
 });
