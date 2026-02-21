@@ -45,7 +45,7 @@ function App() {
     {/* LEFT SIDE - USER LIST */}
     <div className="left-panel">
       <h1>User List</h1>
-      <p className="subtitle">Simple ECS Demo App Build-5</p>
+      <p className="subtitle">Simple ECS Demo App Build-7</p>
 
       <ul className="user-list">
         {users.map((user) => (
