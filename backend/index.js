@@ -33,11 +33,8 @@ db.getConnection((err, connection) => {
 
 /* ================= HEALTH CHECK ================= */
 
-app.get("/", (req, res) => {
-  res.status(200).json({
-    status: "ok",
-    message: "Server is running 🚀",
-  });
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok" });
 });
 
 /* ================= API ROUTES ================= */
