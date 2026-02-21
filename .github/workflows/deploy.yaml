@@ -10,9 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      # 2️⃣ Configure AWS Credentials
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -20,10 +22,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
+      # 3️⃣ Login to ECR
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
+      # 4️⃣ Generate Version Tags
       - name: Generate Image Tags
         id: vars
         run: |
@@ -31,10 +35,10 @@ jobs:
           echo "SHORT_SHA=$SHORT_SHA" >> $GITHUB_OUTPUT
           echo "BUILD_TAG=build-${{ github.run_number }}" >> $GITHUB_OUTPUT
 
+      # 5️⃣ Build & Push Docker Image
       - name: Build, Tag & Push Image
         id: build-image
         env:
-          AWS_REGION: ${{ secrets.AWS_REGION }}
           ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
@@ -50,20 +54,35 @@ jobs:
 
           echo "IMAGE=$IMAGE_URI:v-${{ steps.vars.outputs.SHORT_SHA }}" >> $GITHUB_OUTPUT
 
+      # 6️⃣ Download Task Definition
       - name: Download Current Task Definition
         run: |
           aws ecs describe-task-definition \
             --task-definition ${{ secrets.ECS_TASK_DEFINITION }} \
             --query taskDefinition > task-def.json
 
+          # Remove read-only and unsupported fields
+          jq 'del(
+            .taskDefinitionArn,
+            .revision,
+            .status,
+            .requiresAttributes,
+            .compatibilities,
+            .registeredAt,
+            .registeredBy,
+            .enableFaultInjection
+          )' task-def.json > cleaned-task-def.json
+
+      # 7️⃣ Update Task Definition Image
       - name: Update Task Definition Image
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          task-definition: task-def.json
+          task-definition: cleaned-task-def.json
           container-name: ${{ secrets.CONTAINER_NAME }}
           image: ${{ steps.build-image.outputs.IMAGE }}
 
+      # 8️⃣ Deploy to ECS
       - name: Deploy to ECS Service
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
