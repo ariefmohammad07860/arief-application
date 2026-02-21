@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "./App.css";
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -40,38 +41,42 @@ function App() {
   };
 
   return (
-    <div style={{ padding: "40px", fontFamily: "Arial" }}>
-      <h2>User List Testing-3</h2>
+    <div className="container">
+      <div className="card">
+        <h1>User List</h1>
+        <p className="subtitle">Simple ECS Demo App Build-5</p>
 
-      <ul>
-        {users.map((user) => (
-          <li key={user.id}>
-            {user.name} - {user.email}
-          </li>
-        ))}
-      </ul>
+        <ul className="user-list">
+          {users.map((user) => (
+            <li key={user.id}>
+              <strong>{user.name}</strong>
+              <span>{user.email}</span>
+            </li>
+          ))}
+        </ul>
 
-      <h3>Add User</h3>
+        <form onSubmit={addUser} className="form">
+          <h2>Add User</h2>
 
-      <form onSubmit={addUser}>
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          required
-        />
-        <br /><br />
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <br /><br />
-        <button type="submit">Add User</button>
-      </form>
+          <input
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+
+          <button type="submit">Add User</button>
+        </form>
+      </div>
     </div>
   );
 }
