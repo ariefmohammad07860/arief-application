@@ -40,21 +40,26 @@ function App() {
     }
   };
 
-  return (
-    <div className="container">
-      <div className="card">
-        <h1>User List</h1>
-        <p className="subtitle">Simple ECS Demo App Build-5</p>
+ return (
+  <div className="layout">
+    {/* LEFT SIDE - USER LIST */}
+    <div className="left-panel">
+      <h1>User List</h1>
+      <p className="subtitle">Simple ECS Demo App Build-5</p>
 
-        <ul className="user-list">
-          {users.map((user) => (
-            <li key={user.id}>
-              <strong>{user.name}</strong>
-              <span>{user.email}</span>
-            </li>
-          ))}
-        </ul>
+      <ul className="user-list">
+        {users.map((user) => (
+          <li key={user.id}>
+            <strong>{user.name}</strong>
+            <span>{user.email}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
 
+    {/* RIGHT SIDE - CENTERED FORM */}
+    <div className="right-panel">
+      <div className="form-card">
         <form onSubmit={addUser} className="form">
           <h2>Add User</h2>
 
@@ -78,7 +83,8 @@ function App() {
         </form>
       </div>
     </div>
-  );
+  </div>
+);
 }
 
 export default App;

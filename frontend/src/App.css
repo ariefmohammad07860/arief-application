@@ -9,67 +9,80 @@ body {
   color: #e5e7eb;
 }
 
-.container {
+/* MAIN LAYOUT */
+.layout {
+  display: flex;
   min-height: 100vh;
+}
+
+/* LEFT PANEL */
+.left-panel {
+  width: 50%;
+  padding: 60px;
+}
+
+.left-panel h1 {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #94a3b8;
+  margin-bottom: 30px;
+}
+
+.user-list {
+  list-style: none;
+  padding: 0;
+}
+
+.user-list li {
+  background: #020617;
+  border: 1px solid #1e293b;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.user-list strong {
+  display: block;
+  font-size: 16px;
+}
+
+.user-list span {
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+/* RIGHT PANEL */
+.right-panel {
+  width: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.card {
-  width: 420px;
+/* FORM CARD */
+.form-card {
+  width: 350px;
   background: #020617;
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
 }
 
-h1 {
-  margin: 0;
-}
-
-.subtitle {
-  font-size: 14px;
-  color: #94a3b8;
-  margin-bottom: 20px;
-}
-
-.user-list {
-  list-style: none;
-  padding: 0;
-  margin-bottom: 25px;
-}
-
-.user-list li {
-  background: #020617;
-  border: 1px solid #1e293b;
-  padding: 10px;
-  border-radius: 8px;
-  margin-bottom: 10px;
-}
-
-.user-list strong {
-  display: block;
-  font-size: 14px;
-}
-
-.user-list span {
-  font-size: 13px;
-  color: #94a3b8;
-}
-
 .form h2 {
-  margin-bottom: 10px;
-  font-size: 18px;
+  margin-bottom: 20px;
 }
 
 .form input {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 12px;
-  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 8px;
   border: 1px solid #1e293b;
-  background: #020617;
+  background: #0f172a;
   color: #fff;
 }
 
@@ -80,15 +93,14 @@ h1 {
 button {
   width: 100%;
   padding: 12px;
-  border-radius: 6px;
+  border-radius: 8px;
   border: none;
-  background: #2563eb;
+  background: linear-gradient(90deg, #2563eb, #1d4ed8);
   color: #fff;
-  font-size: 14px;
   font-weight: bold;
   cursor: pointer;
 }
 
 button:hover {
-  background: #1d4ed8;
+  opacity: 0.9;
 }
