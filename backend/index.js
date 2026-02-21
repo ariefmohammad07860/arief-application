@@ -5,30 +5,49 @@ const cors = require("cors");
 const path = require("path");
 
 const app = express();
+
 app.use(cors());
 app.use(express.json());
 
-const db = mysql.createConnection({
+/* ================= DATABASE POOL ================= */
+
+const db = mysql.createPool({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  port: 3306,
+  port: process.env.DB_PORT || 3306,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
 });
 
-db.connect(err => {
+db.getConnection((err, connection) => {
   if (err) {
-    console.error("Database connection failed:", err);
+    console.error("❌ Database connection failed:", err.message);
   } else {
-    console.log("Connected to database");
+    console.log("✅ Connected to database");
+    connection.release();
   }
+});
+
+/* ================= HEALTH CHECK ================= */
+
+app.get("/", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    message: "Server is running 🚀",
+  });
 });
 
 /* ================= API ROUTES ================= */
 
 app.get("/api/users", (req, res) => {
   db.query("SELECT * FROM users", (err, result) => {
-    if (err) return res.status(500).json(err);
+    if (err) {
+      console.error("Fetch error:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
     res.json(result);
   });
 });
@@ -36,11 +55,18 @@ app.get("/api/users", (req, res) => {
 app.post("/api/users", (req, res) => {
   const { name, email } = req.body;
 
+  if (!name || !email) {
+    return res.status(400).json({ error: "Name and email required" });
+  }
+
   db.query(
     "INSERT INTO users (name, email) VALUES (?, ?)",
     [name, email],
-    (err, result) => {
-      if (err) return res.status(500).json(err);
+    (err) => {
+      if (err) {
+        console.error("Insert error:", err);
+        return res.status(500).json({ error: "Database insert error" });
+      }
       res.json({ message: "User added successfully" });
     }
   );
@@ -56,6 +82,8 @@ app.get("*", (req, res) => {
 
 /* ================= START SERVER ================= */
 
-app.listen(process.env.PORT || 5000, "0.0.0.0", () => {
-  console.log("🚀 Server running on 0.0.0.0:5000");
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`🚀 Server running on 0.0.0.0:${PORT}`);
 });
