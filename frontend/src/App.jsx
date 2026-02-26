@@ -40,50 +40,51 @@ function App() {
     }
   };
 
-  return (
-    <div className="app-container">
-      {/* LEFT SIDE */}
-      <div style={{ padding: "40px", fontFamily: "Arial" }}>
-        <h2>User List Testing-9-deploy</h2>
+ return (
+  <div className="layout">
+    {/* LEFT SIDE - USER LIST */}
+    <div className="left-panel">
+      <h1>User List</h1>
+      <p className="subtitle">Testing-9-deploy</p>
 
-        <ul className="user-list">
-          {users.map((user) => (
-            <li key={user.id}>
-              <strong>{user.name}</strong>
-              <span>{user.email}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
+      <ul className="user-list">
+        {users.map((user) => (
+          <li key={user.id}>
+            <strong>{user.name}</strong>
+            <span>{user.email}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
 
-      {/* RIGHT SIDE */}
-      <div className="right-panel">
-        <div className="form-card">
-          <form onSubmit={addUser} className="form">
-            <h2>Add User</h2>
+    {/* RIGHT SIDE - CENTERED FORM */}
+    <div className="right-panel">
+      <div className="form-card">
+        <form onSubmit={addUser} className="form">
+          <h2>Add User</h2>
 
-            <input
-              type="text"
-              placeholder="Name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
+          <input
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
 
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
-            <button type="submit">Add User</button>
-          </form>
-        </div>
+          <button type="submit">Add User</button>
+        </form>
       </div>
     </div>
-  );
+  </div>
+);
 }
 
 export default App;

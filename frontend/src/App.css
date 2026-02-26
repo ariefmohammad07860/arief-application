@@ -19,6 +19,7 @@ body {
 .left-panel {
   width: 420px;
   padding: 60px 40px;
+  border-right: 1px solid #1e293b;
 }
 .left-panel h1 {
   font-size: 40px;
